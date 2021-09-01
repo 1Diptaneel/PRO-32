@@ -5,7 +5,7 @@ const Constraint = Matter.Constraint;
 
 var engine, world;
 var backgroundImg;
-
+var hour;
 var bg ;
 
 function preload() {
@@ -26,23 +26,33 @@ function draw(){
     if(backgroundImg){
         background(backgroundImg);
         noStroke();
+        
     }
 
 
     Engine.update(engine);
 
     // write code to display time in correct format here
+    if(hour>=12){
+      text("Time: "+hour%12+" PM ",50,100);
+      }
+    else if(hour==0){
+    text("Time: 12AM" ,100,100);   
+    }  
+    else {
+    text("Time: "+hour%12+" AM ",50,100) ;  
+    }
 
 
 }
 async function getBackgroundImg(){
-    var response = await fetch("http://worldtimeapi.org/api/timezone/Asia/Tokyo");
+    var response = await fetch("http://worldtimeapi.org/api/timezone/Asia/Kolkata");
     var responseJSON = await response.json();
 
     console.log(responseJSON);
 
     var datetime = responseJSON.datetime;
-    var hour = datetime.slice(11,13);
+    hour = datetime.slice(11,13);
 
     console.log(datetime+"  " +hour);
 
@@ -50,12 +60,22 @@ async function getBackgroundImg(){
         bg = "sunrise1.png";
     }else if(hour>=06 && hour<=08){
         bg = "sunrise2.png";
-    }else if(hour>=23 && hour==0){
-        bg = "sunset10.png";
-    }else if(hour>=0 && hour==03){
-        bg = "sunset11.png";
-    }else{
-        bg = "sunset12.png";
+    }else if(hour>08 && hour<=11){
+        bg = "sunrise3.png";    
+    }else if(hour>11 && hour<=12){
+        bg = "sunrise5.png";  
+    }else if(hour>12 && hour<=14){
+        bg = "sunrise5.png"; 
+    }else if(hour>14 && hour<=17){
+        bg = "sunrise6.png";   
+    }else if(hour>17 && hour<=18){
+        bg = "sunset7.png"; 
+    }else if(hour>18 && hour<=19){
+        bg = "sunset8.png"; 
+    }else if(hour>19 && hour<=22){
+        bg = "sunset11.png";                                          
+    }else if(hour>22 && hour<=04){
+        bg = "sunset12.png";      
     }
 backgroundImg = loadImage(bg);
 
